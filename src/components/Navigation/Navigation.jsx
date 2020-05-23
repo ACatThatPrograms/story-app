@@ -2,7 +2,7 @@
 import React from 'react';
 import { mapAllStatesToProps, mapAllDispatchesToProps } from 'redux/helpers/main.js';
 import { connect } from "react-redux";
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 // Local Styling
 import localstyle from './Navigation.module.scss';
@@ -22,4 +22,4 @@ const Navigation = (props) => {
 }
 
 
-export default connect(mapAllStatesToProps, mapAllDispatchesToProps)(Navigation)
+export default connect(mapAllStatesToProps, mapAllDispatchesToProps)(withRouter(Navigation))

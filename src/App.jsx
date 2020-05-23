@@ -19,21 +19,14 @@ class App extends Component  {
 
     return (
 
-      <>
-
+      <Router>
         <Navigation/>
-
-        <Router>
-          <Route exact path="/" component={PageOne}/>
-          <Route exact path="/pageTwo" component={PageTwo}/>
-        </Router>
-
-      </>
+        <Route exact path="/" component={PageOne}/>
+        <Route exact path="/pageTwo" component={PageTwo}/>
+      </Router>
 
     );
-
   }
-
 }
 
 export default App;
