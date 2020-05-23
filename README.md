@@ -1,4 +1,25 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## A React App Skeleton by Mr.Cat
+
+This is a skeleton for ReactJS based apps that include the following included:
+
+* react-create-app base
+* react-redux with helpers for mapping to props quickly
+* react-router for navigation with examples
+* node-sass, including local module examples and baseline wiped tag styles
+* base file hierarchy included
+* jsconfig.json setup for src/* imports as opposed to relative imports
+* All included .js files, sans the vanilla index, renamed to .jsx for IDE syntax recognition*
+* Commented examples for those who are just learning
+
+_Do not rename index.js to index.jsx, create-react-app will not compile with it as jsx_
+
+###### Getting Started ######
+
+Step 1: `yarn install`
+Step 2: `yarn run`
+Step 3: `make app`
+
+**Standard React Create App README Below for reference**
 
 ## Available Scripts
 

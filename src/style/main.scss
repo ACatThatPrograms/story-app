@@ -1,0 +1,12 @@
+/* Layout */
+@import './layout/layout.scss';
+
+@import './color/color.scss';
+
+/*Typography*/
+@import './typography/typography.scss';
+
+// Global Class Demo
+.aGlobalClassOfRed {
+  color: red;
+}

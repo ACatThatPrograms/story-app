@@ -1,0 +1,44 @@
+@import './color/color.scss';
+
+/* Major Tag Styling */
+html, body, #root {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+
+br {
+  margin: 1rem 0rem;
+}
+
+// Wrapper for all pages!
+@mixin pageWrap {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  background: $bg_color;
+}
+
+// Layout for example pageWrapColumn
+// remove this mixin
+@mixin examplePageOnly {
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  height: 100%;
+  padding-top: 4rem;
+}
+
+.pageWrapColumn {
+  @include examplePageOnly // remove
+  @include pageWrap;
+  flex-flow: column;
+}
+
+.pageWrapRow {
+  @include pageWrap;
+  flex-flow: row;
+}
