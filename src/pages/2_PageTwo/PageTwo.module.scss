@@ -7,8 +7,6 @@
   background: rgba(133,133,133,.8);
   padding: 2rem;
 
-  // Notice that p is the third child in DOM order
-  // under <br> in PageTwo.jsx!
   p:nth-child(3) {
     font-size: .85rem;
   }

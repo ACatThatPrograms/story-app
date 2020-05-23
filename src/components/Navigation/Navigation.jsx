@@ -11,11 +11,8 @@ const Navigation = (props) => {
 
   return (
     <div className={localstyle.navigationWrap}>
-
-      {/* react-router-dom's Link component is easy, just use the to prop, and an a tag will be generated for you!*/}
       <Link to='/'>Page One (Root)</Link>
       <Link to='/pageTwo'>Page Two</Link>
-
     </div>
   )
 
