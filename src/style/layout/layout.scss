@@ -19,26 +19,78 @@ br {
   display: flex;
   height: 100%;
   width: 100%;
-  background: $bg_color;
-}
-
-// Layout for example pageWrapColumn
-// remove this mixin
-@mixin examplePageOnly {
-  display: flex;
-  flex-flow: column;
-  justify-content: flex-start;
-  height: 100%;
-  padding-top: 4rem;
 }
 
 .pageWrapColumn {
-  @include examplePageOnly // remove
   @include pageWrap;
+  height: 100%;
   flex-flow: column;
+  overflow: auto;
+  z-index: 0;
 }
 
-.pageWrapRow {
-  @include pageWrap;
-  flex-flow: row;
+.pageBorder {
+  position: absolute;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  background: lighten($bg_color,5);
+  z-index: -20;
+  box-sizing: border-box;
+}
+
+.page {
+  position: relative;
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: hidden;
+
+
+  .fullPanel {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+    background: darken($bg_color, 5);
+    height: 400px;
+  }
+
+  @mixin halfpanel {
+    width: 50%;
+    height: 90%;
+    z-index: -2;
+  }
+
+  .leftPanel {
+    @include halfpanel;
+    left: 2rem;
+    background: darken($bg_color, 5);
+  }
+
+  .rightPanel {
+    right: 0;
+    @include halfpanel;
+    background: lighten($bg_color,5);
+  }
+
+  img {
+    display: flex;
+    height:100%;
+    width:auto;
+  }
+
+}
+
+.replay {
+  position: absolute;
+  height: 44px;
+  width: 200px;
+  background: grey;
+  top: .1rem;
+  left: 1rem;
+  z-index: 5;
 }

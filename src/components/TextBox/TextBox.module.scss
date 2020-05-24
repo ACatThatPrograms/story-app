@@ -1,0 +1,43 @@
+@import 'style/typography/typography.scss';
+
+$background: transparent;
+$font-color: black;
+$border-color: darken($background,20);
+
+.textbox {
+  // Display / Sizing
+  display:flex;
+  width: 100%;
+  max-width: 1200px;
+  margin: 4rem;
+  padding: 2rem;
+  border: 3px solid;
+  border-radius: 1rem;
+  // Font / Text
+  font-family: $Melody;
+  font-size: 36px;
+  font-weight: 600;
+  // Color
+  color: $font-color;
+  background: $background;
+  border-color: $border-color;
+}
+
+.word {
+  margin-left: .25rem;
+
+  &:nth-child(1){
+    margin-left: 0rem;
+  }
+
+  &:last-child {
+    opacity: .25;
+  }
+
+}
+
+br {
+  background: red;
+  border: 1px solid white;
+  margin: 2rem 0rem;
+}
