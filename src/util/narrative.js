@@ -48,13 +48,42 @@ let page6 =
 [w100] so he’s no stranger to a remote-working environment. [w350]
 [2br] And,[w100] perhaps the most exciting bit, [w100] Adam is located in. [w20] . [w20] . [w20]
 [2br] EASTERN. [w450] STANDARD. [w450] TIME!!! [w450]
-[2br] . [w15] . [w15] . [w15] you mean [w15] . [w15] . [w15] . [w100]
+[2br] ". [w15] . [w15] . [w15] you mean [w15] . [w15] . [w15] . [w100]
 I'D NEVER BE LONELY AGAIN?!?” [w200]
 [2br] Yes, [w20] exactly!!`
 
-let page7 = `page7`
+let page7 = `So,[w100] Adam scrambled to apply to this once-in-a-lifetime opportunity. [w350]
 
-let page8 = `page8`
+[2br] After all,[w50] how often does a developer run into a job listing like this? [w350] Full remote,[w50]
+ a team that seems fun and agreeable,[w50] good pay,[w50] and requirements that he ticks all the boxes for?
+ [w200] Awesome! [w350]
+
+[2br] He worked tirelessly to create his masterpiece. [w300] Through storms. [w300] Through hail. [w300] There was a blizzard.
+[w300] Then a drought. [w300] Then a heatwave, [w50] and his office air conditioner was broken. [w350]
+
+[2br] Until,[w80] finally, he was done! [w350] Ready to submit!`
+
+let page8 = `Adam sat at his desk and became. [w50] . [w50] . worried. [w350]
+
+[2br] “Did I go overboard?” [w250]
+[br] “Did I miss a bug?” [w250]
+[br] “Will they think it’s stupid?” [w250]
+[br] “Did another applicant do the same?” [w250]
+[br] “What if they never reply?” [w250]
+
+But then. [w50] . [w50] . [w350]
+
+[2br] [ding]
+
+[2br] He got an email!
+
+[br] He got the interview!
+
+[br] He got the job!
+
+[2br] Congratulations,[w50] Adam! [w350] Three cheers for Adam! [w350]
+
+[2br] ~ The End ~`
 
 export default {
   0: page0,
