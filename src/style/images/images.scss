@@ -8,19 +8,52 @@
   img { width: 85% !important;}
 }
 
+// All Images
+.image img {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: auto;
+  width: 100%;
+  border-bottom-right-radius: 8px;
+}
 // Page 1
 
-.img_0 {}
 
-.img_1 {}
+.img_0 img {
+  max-height: 800px;
+  width: auto;
+  // 768px Height Laptop
+  @media (max-height: 768px) {
+    max-height: 640px;
+  }
+}
 
-.img_2 {@include centerImg}
+.img_1 img {
+  max-height: 100%;
+  width: 100%;
+}
 
-.img_3 {}
+.img_2 {
+  //@include centerImg
+}
+
+.img_3 {
+
+}
 
 .img_4 {
   @include centerImg;
-  @include size85;
+  img {
+    max-height: 800px;
+    width: auto;
+  }
+  // 768px Height Laptop
+  @media (max-height: 768px) {
+    img {
+      max-height: 640px;  
+    }
+  }
 }
 
 .img_5 {
@@ -28,6 +61,8 @@
   @include size85;
 }
 
-.img_6 {}
+.img_6 {
+
+}
 
 .img_7 {}

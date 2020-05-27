@@ -80,7 +80,7 @@ class App extends Component  {
   }
 
   getImgClass() {
-    return "img_" + this.state.currentPage.toString()
+    return "image " + "img_" + this.state.currentPage.toString()
   }
 
   getImageUrl() {

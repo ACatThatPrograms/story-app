@@ -136,17 +136,6 @@ br {
 
     .left {
       position: relative;
-
-      img {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        display: flex;
-        height: auto;
-        width: 100%;
-        border-bottom-right-radius: 8px;
-      }
-
     }
 
     .right {

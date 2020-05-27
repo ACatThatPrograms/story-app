@@ -27,8 +27,8 @@ class TextBox extends React.Component {
     this.speedMulti = 1;
 
     // Props
-    this.medianCharDelay  = props.medianCharDelay || 40; //90;
-    this.delayWaver       = props.delayWaver      || 30;
+    this.medianCharDelay  = props.medianCharDelay || 90; //90;
+    this.delayWaver       = props.delayWaver      || 40;
     this.startDelay       = props.startDelay      || 3000; // TODO: update this for not my needs
 
     // Timeout list
