@@ -62,9 +62,11 @@ class TextBox extends React.Component {
 
     // Other
     this.waitInput  = false;
-    this.lockSpace  = false;
+    this.lockSpace  = true;
     this.timeouts   = [];
     this.speedMulti = 1.00;
+
+    this.pressDown = false;
 
   }
 
@@ -168,15 +170,19 @@ class TextBox extends React.Component {
   /* User Input */
   ////////////////
   handleKeyDown(e) {
+    if (this.pressDown) { return }
     if (e.code === "Space" && !this.lockSpace ) {
       this.input();
     }
+    this.pressDown = true;
   }
 
   handleKeyUp(e) {
+    if (!this.pressDown) { return }
     if (e.code === "Space" ) {
       this.speedMulti = 1.00
     }
+    this.pressDown = false;
   }
 
   //////////////////
@@ -197,6 +203,8 @@ class TextBox extends React.Component {
 
     // If waiting for input, don't do anything
     if (this.waitInput) { return }
+
+    this.lockSpace = false;
 
     let charDelay = this.getCharDelay()
 
@@ -266,7 +274,8 @@ class TextBox extends React.Component {
       await this.wait(timeDelay)
     }
     if ( cc.charAt(1) === "w" & cc.charAt(2) === "i" ) {
-      this.waitInput = true
+      this.waitInput = true;
+      this.lockSpace = false;
     }
     // TODO: Remove project specific img parsing
     if ( cc === "[ding]") {
