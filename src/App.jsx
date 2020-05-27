@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Progress } from 'reactstrap';
+import { Progress, Spinner } from 'reactstrap';
 import './style/main.scss';
 import { CSSTransitionGroup } from 'react-transition-group' // ES6
 import { turnPage } from 'util/client.js'
@@ -26,12 +26,15 @@ class App extends Component  {
 
     this.imageFrames    = getImageData(); // All Image Frames
     this.totalImages    = 22; // TODO: Automate this in utils
-    this.loopAnimRate   = 1000;
+    this.loopAnimRate   = 700;
 
     // Binds
     this.getCurrentPage = this.getCurrentPage.bind(this)
     this.buildPage      = this.buildPage.bind(this)
     this.checkAnim      = this.checkAnim.bind(this)
+
+    // Timeouts
+    this.loopInterval = null
 
     // TextBox Props to Forward Custom CCs
     this.customCCs = [
@@ -45,17 +48,30 @@ class App extends Component  {
 
   }
 
+  componentDidUpdate() {
+    //console.log(this.state)
+  }
+
   ////////////////////////
   // Animation Handling //
   ////////////////////////
   checkAnim() {
+    clearInterval(this.loopInterval)
     if (getPageAnimType(this.state.currentPage) === 'loop') {
       this.handleLoopAnim()
     }
   }
 
   handleLoopAnim() {
-    console.log('loopanim')
+    let frameUrls  = this.imageFrames[this.state.currentPage]
+    let frames = Object.keys(frameUrls)
+    this.loopInterval = setInterval( () => {
+      if (this.state.currentFrame < frames.length-1) { // Next Frame
+        this.setState({'currentFrame': this.state.currentFrame+1})
+      } else {
+        this.setState({'currentFrame': 0}) // Reset Anim
+      }
+    }, this.loopAnimRate)
   }
 
   triggerAnim(frame) {
@@ -66,9 +82,8 @@ class App extends Component  {
   // Custom Control Codes for TBox //
   ///////////////////////////////////
   parseForFrameUpdate(cc) {
-    //debugger;
-    let updateFrame = cc.charAt(1);
-    this.setState({'currentFrame': updateFrame})
+    let updateFrame = parseInt(cc.charAt(1));
+    this.triggerAnim(updateFrame)
   }
 
   ////////////////////////////////
@@ -80,6 +95,13 @@ class App extends Component  {
 
   pageUpdate(page) {
     this.setState({'currentPage': page.currentPage, 'currentFrame': 0}, this.checkAnim)
+  }
+
+  // Show first spinner on textbox loading
+  firstSpinner() {
+    return this.state.currentPage === 0 ? (
+      <div className="spinner"><Spinner style={{"height":"6rem","width":"6rem"}} color="success"/></div>
+    ) : ''
   }
 
   ///////////////////
@@ -104,11 +126,13 @@ class App extends Component  {
           <div className="back">
 
             <div className={["left", this.getImgClass()].join(' ')}>
-              <img alt="img" src={ this.getImageUrl() }/>
+              {this.getImage()}
+              {this.checkForNonImage()}
             </div>
 
             <div className="right">
               {textBox}
+              {this.firstSpinner()}
             </div>
 
           </div>
@@ -121,8 +145,9 @@ class App extends Component  {
     return "image img_" + this.state.currentPage.toString()
   }
 
-  getImageUrl() {
-    return this.imageFrames[parseInt(this.state.currentPage)][parseInt(this.state.currentFrame)]
+  getImage() {
+    let url = this.imageFrames[parseInt(this.state.currentPage)][parseInt(this.state.currentFrame)]
+    return  url === null ? '' : (<img alt="img" src={url}/>)
   }
 
   getCurrentPage() {
@@ -131,6 +156,11 @@ class App extends Component  {
 
   getCurrentNarrative() {
     return narrative[this.state.currentPage]
+  }
+
+  // Return secondary left panel material
+  checkForNonImage() {
+    return ''
   }
 
   ////////////////
@@ -148,6 +178,8 @@ class App extends Component  {
       })
       return ''
     })
+    // Filters out nulls
+    images = images.filter( e => e.key !== null)
     return images
   }
 
@@ -166,8 +198,6 @@ class App extends Component  {
 
     let cssTransiitonProps = {
       transitionName          : "page",
-      // transitionAppear        : true,
-      // transitionAppearTimeout : 1500,
       transitionEnter         : true,
       transitionLeave         : true,
       transitionEnterTimeout  : 3000,

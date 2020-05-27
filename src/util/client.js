@@ -116,8 +116,7 @@ export function getPageAnimType(pageNum) {
     case 4:
     case 5:
     case 6:
-    case 7:
-    case 8: return 'loop'
+    case 7: return 'loop'
     default: return 'trigger'
   }
 }

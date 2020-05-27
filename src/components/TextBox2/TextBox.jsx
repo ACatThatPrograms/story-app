@@ -4,8 +4,8 @@ import React from 'react'
 
 // Images
 import SpacebarImg from 'images/spacebar1.gif';
-//import ReactJSImg  from 'images/reactjs.png';
-//import DingImg     from 'images/ding.png';
+import ReactJSImg  from 'images/reactjs.png';
+import DingImg     from 'images/ding.png';
 // Sfx
 import textBeep from 'audio/text.mp3';
 
@@ -37,11 +37,13 @@ class TextBox extends React.Component {
 
     this.speedMulti = 1;
 
-    // Props
-    this.medianCharDelay  = props.medianCharDelay || 40;
-    this.delayWaver       = props.delayWaver      || 10;
-    this.startDelay       = props.startDelay      || 3000; // TODO: update this for not my needs
-    this.customCCs        = props.customCCs       || [];
+    console.log(this.props.startDelay)
+
+    // Props // TODO: Convert to propTypes
+    this.medianCharDelay  = 40;
+    this.delayWaver       = 10;
+    this.startDelay       = 3000; // TODO: update this for not my needs
+    this.customCCs        = [];
 
     // Timeout list
     this.parseTimeout = null;
@@ -93,7 +95,7 @@ class TextBox extends React.Component {
     document.addEventListener("keydown", this.handleKeyDown.bind(this))
     document.addEventListener("keyup", this.handleKeyUp.bind(this))
     // Prepare Text
-    this.textToType = this.prepareText(this.props.textToType || "")
+    this.prepareText(this.props.textToType || "")
   }
 
   shouldComponentUpdate() {
@@ -103,7 +105,13 @@ class TextBox extends React.Component {
     return this.state.charsTyped.length <= this.state.charArray.length
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
+    //console.log("prev", prevProps, prevState)
+    //console.log("cur", this.props, this.state)
+    // If charArray changes from prop passing restart textBox
+    if (prevState.charArray.length === 0 && this.state.charArray.length > 0) {
+      this.prepareText(this.props.textToType, true)
+    }
     // Performance logging etc.
     this.perfLogging();
     // Check if typing is done . . .
@@ -149,7 +157,9 @@ class TextBox extends React.Component {
   }
 
   isTypingDone() {
-    if (this.state.charsTyped.length >= this.state.charArray.length && !this.state.doneTyping) {
+    if (this.state.charsTyped !== 0 &&
+      this.state.charsTyped.length >= this.state.charArray.length
+      && !this.state.doneTyping) {
       this.setState({"doneTyping": true})
     }
   }
@@ -173,10 +183,10 @@ class TextBox extends React.Component {
   /* Text Parsing */
   //////////////////
 
-  async prepareText(text) {
+  async prepareText(text, reset=false) {
     let charArray = text.split("")
-    if (this.startDelay) { await this.wait(this.startDelay) }
-    this.setState({"charArray": charArray}, this.parseNextChar)
+    if (this.startDelay && !reset) { await this.wait(this.startDelay) }
+    this.setState({"charArray": charArray, "doneTyping": !reset}, this.parseNextChar)
   }
 
   // Parse the next char for CC Leaders, default is " [ " ; handle accordingly
@@ -257,6 +267,27 @@ class TextBox extends React.Component {
     }
     if ( cc.charAt(1) === "w" & cc.charAt(2) === "i" ) {
       this.waitInput = true
+    }
+    // TODO: Remove project specific img parsing
+    if ( cc === "[ding]") {
+      let imgToAdd = `<img src="${DingImg}" alt="ding"/>`
+      ccRemoved.splice(this.state.charIndex,1,imgToAdd)
+    }
+    if ( cc === "[reactjs]") {
+      let domToAdd = `<img src="${ReactJSImg}" alt="ding"/>`
+      ccRemoved.splice(this.state.charIndex,1,domToAdd)
+    }
+    if ( cc === "[email]") {
+      let domToAdd = `<a href="mailto:adam@acatthatprograms.com?subject=We would totally love to hire you!">email me!</a>`
+      ccRemoved.splice(this.state.charIndex,1,domToAdd)
+    }
+    if ( cc === "[website]") {
+      let domToAdd = `<a href="https://acatthatprograms.com" target="_blank">website</a> `
+      ccRemoved.splice(this.state.charIndex,1,domToAdd)
+    }
+    if ( cc === "[resume]") {
+      let domToAdd = `<a href="https://acatthatprograms.com/curriculum_vitae.pdf" target="_blank">resume</a>`
+      ccRemoved.splice(this.state.charIndex,1,domToAdd)
     }
     // Parse for custom control codes
     if (this.props.customCCs && this.props.customCCs.length > 0) {

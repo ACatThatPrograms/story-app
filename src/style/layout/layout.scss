@@ -56,6 +56,18 @@ br {
   display: none;
 }
 
+.spinner {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  z-index: -1;
+}
+
 /////////////////
 /* MAIN LAYOUT */
 /////////////////
@@ -150,6 +162,10 @@ br {
       border-bottom-right-radius: 18px;
       transform-style: preserve-3d;
       transition: 2s all cubic-bezier(.75,.1,.14,.57);
+
+      @media screen and (max-height: 768px) {
+        padding: 2rem;
+      }
 
       >span {
         width: 100%;

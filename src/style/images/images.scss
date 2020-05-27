@@ -5,7 +5,7 @@
 }
 
 @mixin size85 {
-  img { width: 85% !important;}
+  img { width: 75% !important;}
 }
 
 // All Images
@@ -43,15 +43,14 @@
 }
 
 .img_4 {
-  @include centerImg;
   img {
-    max-height: 800px;
-    width: auto;
+    height: auto;
+    width: 100%;
   }
   // 768px Height Laptop
   @media (max-height: 768px) {
     img {
-      max-height: 640px;  
+      max-height: 640px;
     }
   }
 }
@@ -62,7 +61,12 @@
 }
 
 .img_6 {
-
+  @include centerImg;
+  @include size85;
 }
 
 .img_7 {}
+
+.img_8 {
+
+}
