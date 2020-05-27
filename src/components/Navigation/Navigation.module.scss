@@ -1,0 +1,24 @@
+.navigationWrap {
+  // position / display
+  position: absolute;
+  top: .3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  // color
+  height: 23px;
+  z-index: 10;
+
+  // Icons
+  >div:nth-child(1), >div:nth-child(3) {
+    font-size: 22px;
+    cursor: pointer;
+    opacity: .5;
+    transition: .35s all;
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+}

@@ -1,0 +1,33 @@
+@mixin centerImg {
+  justify-content: center !important;
+  align-items: center !important;
+  img { position: relative !important; }
+}
+
+@mixin size85 {
+  img { width: 85% !important;}
+}
+
+// Page 1
+
+.img_0 {}
+
+.img_1 {}
+
+.img_2 {@include centerImg}
+
+.img_3 {}
+
+.img_4 {
+  @include centerImg;
+  @include size85;
+}
+
+.img_5 {
+  @include centerImg;
+  @include size85;
+}
+
+.img_6 {}
+
+.img_7 {}

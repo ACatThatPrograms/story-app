@@ -1,22 +1,31 @@
 // React && Core Dependencies
 import React from 'react';
-import { mapAllStatesToProps, mapAllDispatchesToProps } from 'redux/helpers/main.js';
-import { connect } from "react-redux";
-import { Link, withRouter } from 'react-router-dom';
+// Icons
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 
 // Local Styling
 import localstyle from './Navigation.module.scss';
 
-const Navigation = (props) => {
+function Navigation(props) {
 
   return (
     <div className={localstyle.navigationWrap}>
-      <Link to='/'>Page One (Root)</Link>
-      <Link to='/pageTwo'>Page Two</Link>
+      {/* Back Arrow */}
+      <div onClick={()=>props.turn('L', props)}>
+        <FontAwesomeIcon icon={faArrowLeft}/>
+      </div>
+      {/* Location */}
+      <div>Page {props.currentPage}</div>
+      {/*Front Arrow */}
+      <div onClick={()=>props.turn('R', props)}>
+        <FontAwesomeIcon icon={faArrowRight}/>
+      </div>
+
     </div>
   )
 
 }
 
 
-export default connect(mapAllStatesToProps, mapAllDispatchesToProps)(withRouter(Navigation))
+export default Navigation

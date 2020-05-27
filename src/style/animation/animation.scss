@@ -1,0 +1,93 @@
+@import 'style/color/color.scss';
+
+///////////////
+/* MAIN WRAP */
+///////////////
+
+.page-enter {
+  .innerPage {
+    .back .left {
+      left: 100%;
+      opacity: 0;
+      // left: 0%;
+      // transform: rotateY(0deg);
+    }
+  }
+}
+
+.page-enter.page-enter-active {
+  .innerPage {
+    .back .left {
+      opacity: 1;
+      left: 0%;
+      transition: 3s all linear,
+                  left 1.5s linear;
+      // left: 0%;
+      // transform: rotateY(-180deg);
+    }
+  }
+}
+
+
+.page-leave {
+  .innerPage {
+
+    .back .left {
+      opacity: 1;
+      left: 0%;
+    }
+
+    .back .right {
+      opacity: 1;
+      left: 0%;
+      transform: rotateY(0deg);
+    }
+  }
+}
+
+.page-leave.page-leave-active {
+  .innerPage {
+
+    .back .left {
+      left: -100%;
+      opacity: 0;
+      transition: 1s all cubic-bezier(.75,.1,.14,.57),
+                  .5s opacity linear;
+    }
+
+    .back .right {
+      opacity: 0;
+      transition: 2s all cubic-bezier(.75,.1,.14,.57),
+                  1.4s left linear,
+                  2s opacity linear;
+      left: 0%;
+      transform: rotateY(-180deg);
+    }
+
+  }
+}
+
+//////////////
+/* TEXT BOX */
+//////////////
+
+.textbox-appear {
+  opacity: 0.01;
+  transform: scale(0)
+}
+
+.textbox-appear.textbox-appear-active {
+  opacity: 1;
+  transition: all .75s steps(200,end);
+  transform: scale(1);
+  transition-delay: 2s;
+}
+
+.textbox-leave {
+  opacity: 1;
+}
+
+.textbox-leave.textbox-leave-active {
+  opacity: 0.01;
+  transition: opacity 2s ease-in;
+}

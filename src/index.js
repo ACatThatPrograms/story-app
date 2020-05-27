@@ -1,15 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
 import App from './App';
-// import 'bootstrap/dist/css/bootstrap.min.css'; // Bootstrap styling if you need it
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-/* Redux Store */
-import { Provider } from 'react-redux';
-import store from 'redux/store/index.js'; // Redux store if using
-
-render(
-    <Provider store={store}>
-      <App />
-    </Provider>,
-    document.getElementById('root')
-);
+render( <App />, document.getElementById('root') );

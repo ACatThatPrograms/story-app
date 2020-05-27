@@ -1,4 +1,4 @@
-@import './color/color.scss';
+@import './typography/typography.scss';
 
 /* Major Tag Styling */
 html, body, #root {
@@ -8,89 +8,177 @@ html, body, #root {
   width: 100%;
   padding: 0px;
   margin: 0px;
+  background: darken($bg_color, 5);
+  overflow: hidden;
+
+  >span, >span>div {
+    height: 100%;
+  }
+
 }
 
 br {
-  margin: 1rem 0rem;
+  margin: 0rem 0rem;
 }
 
-// Wrapper for all pages!
-@mixin pageWrap {
-  display: flex;
-  height: 100%;
-  width: 100%;
-}
-
-.pageWrapColumn {
-  @include pageWrap;
-  height: 100%;
-  flex-flow: column;
-  overflow: auto;
-  z-index: 0;
-}
-
-.pageBorder {
-  position: absolute;
-  display: flex;
-  height: 100%;
-  width: 100%;
-  background: lighten($bg_color,5);
-  z-index: -20;
-  box-sizing: border-box;
-}
-
-.page {
-  position: relative;
+////////////
+/* LOADER */
+////////////
+.loaderWrap {
   display: flex;
   flex-flow: column;
   height: 100%;
   width: 100%;
   justify-content: center;
-  align-items: flex-start;
-  overflow: hidden;
+  align-items: center;
+  font-family: $Font_2;
 
-
-  .fullPanel {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    box-sizing: border-box;
-    background: darken($bg_color, 5);
-    height: 400px;
+  >div {
+    margin-top: 1rem;
   }
 
-  @mixin halfpanel {
-    width: 50%;
-    height: 90%;
-    z-index: -2;
+  >div:nth-child(1) {
+    margin-top: 0rem;
   }
 
-  .leftPanel {
-    @include halfpanel;
-    left: 2rem;
-    background: darken($bg_color, 5);
-  }
-
-  .rightPanel {
-    right: 0;
-    @include halfpanel;
-    background: lighten($bg_color,5);
-  }
-
-  img {
-    display: flex;
-    height:100%;
-    width:auto;
+  >div:nth-child(3) {
+    margin-top: 1.5rem;
   }
 
 }
 
-.replay {
+.loader {
+  width: 50%;
+  display: block;
+}
+
+.image_queue {
+  display: none;
+}
+
+/////////////////
+/* MAIN LAYOUT */
+/////////////////
+
+.main-border {
+    position: absolute;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    background: darken($bg_color,10);
+    >span {
+      display: flex;
+      width: 100%;
+      overflow: hidden;
+    }
+
+}
+
+@mixin fakeMarginPaddingForMainBorderChildren {
+  margin: 2rem; // Fake Padding
+  height: calc(100% - 4rem );
+  width: calc(100% - 4rem );
+}
+
+.page-color {
   position: absolute;
-  height: 44px;
-  width: 200px;
-  background: grey;
-  top: .1rem;
-  left: 1rem;
-  z-index: 5;
+  display: flex;
+  @include fakeMarginPaddingForMainBorderChildren;
+  background: $bg_color;
+  border-radius: 12px;
+  box-shadow: -2px 2px 4px 1px rgba(44,44,44,.25);
+}
+
+.page {
+  position: absolute;
+  display: flex;
+  @include fakeMarginPaddingForMainBorderChildren;
+  perspective: 480px;
+  overflow: hidden;
+}
+
+.innerPage {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+
+  .front, .back {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    backface-visibility: hidden;
+  }
+
+  // to be flipped
+  .front {
+    width: 50%;
+    transform: rotateY(180deg);
+  }
+
+  // Actual Page
+  .back {
+    // Animr Requirements
+    transform: rotateY(0deg);
+
+    // Secondary
+    position: absolute;
+    display: flex;
+    flex-flow: row;
+
+    .left, .right {
+      display: flex;
+      width: 50%;
+      border: 2px solid transparentize(darken($bg_color,30), .5);
+      border-radius: 10px;
+      box-sizing: border-box;
+    }
+
+    .left {
+      position: relative;
+
+      img {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        height: auto;
+        width: 100%;
+        border-bottom-right-radius: 8px;
+      }
+
+    }
+
+    .right {
+      position: absolute;
+      height: 100%;
+      left: 50%;
+      box-shadow: 2px 2px 20px 10px rgba(133,133,133,.25);
+      background: $bg_color;
+      padding: 4rem;
+      backface-visibility: hidden;
+      border-top-right-radius: 18px;
+      border-bottom-right-radius: 18px;
+      transform-style: preserve-3d;
+      transition: 2s all cubic-bezier(.75,.1,.14,.57);
+
+      >span {
+        width: 100%;
+      }
+
+    }
+
+    // Anim Hover tests
+
+    &:hover {
+
+      // .right {
+      //   left: 0%;
+      //   transform: rotateY(-180deg);
+      // }
+
+    }
+
+  }
+
 }
