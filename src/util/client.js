@@ -57,45 +57,48 @@ export function applyTextBoxAnim(component) {
 export function getImageData() {
   return {
       0: {
+        0: null
+      },
+      1: {
         0: page1_1,
         1: page1_2,
         2: page1_3,
         3: page1_4,
       },
 
-      1: {
+      2: {
         0: page2_1,
         1: page2_2,
       },
 
-      2: {
+      3: {
         0: page3_1,
       },
 
-      3: {
+      4: {
         0: page4_1,
         1: page4_2,
       },
 
-      4: {
+      5: {
         0: page5_1,
         1: page5_2,
       },
 
-      5: {
+      6: {
         0: page6_1,
         1: page6_2,
         2: page6_3,
       },
 
-      6: {
+      7: {
         0: page7_1,
         1: page7_2,
         2: page7_3,
         3: page7_4,
       },
 
-      7: {
+      8: {
         0: page8_1,
         1: page8_2,
         2: page8_3,

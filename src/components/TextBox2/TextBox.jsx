@@ -103,12 +103,6 @@ class TextBox extends React.Component {
     })
   }
 
-  async asyncSetState(stateToSet) {
-    return new Promise( (res) => {
-      this.setState(stateToSet, () => res() )
-    })
-  }
-
   clearTimeouts() {
     return new Promise( (res) => {
       for (let timeout of this.timeouts) {
@@ -178,7 +172,7 @@ class TextBox extends React.Component {
     ) {
 
       let ccDetected = await this.handleControlCode()
-      await this.asyncSetState(ccDetected)
+      this.setState(ccDetected)
 
     } else {
 
