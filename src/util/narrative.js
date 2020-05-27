@@ -1,5 +1,5 @@
 let page0 =
-`Hello there! [2br] [w350] Have a seat, I've got a story for you! [w350]
+`Hello there! [2br] [wi] [w350] Have a seat, I've got a story for you! [w350] [wi]
 [2br] Now, [w350] here’s a tale worthy enough for the bedtimes of all young software engineers around the world [w125] . [w120] . [w125] . [w125]
 [2br] This is the story of Adam, [w350] and how he got the best job ever. [w500]`
 

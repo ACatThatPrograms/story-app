@@ -104,6 +104,9 @@ export function getImageData() {
         2: page8_3,
         3: page8_4,
       },
+      9: {
+        0: null
+      }
 
     }
 }
@@ -130,5 +133,5 @@ const _turnLeft = (currentPage, dispatchFx) => {
 }
 
 const _turnRight = (currentPage, dispatchFx) => {
-  if (currentPage < 7) { dispatchFx({'currentPage':currentPage+1}) }
+  if (currentPage < 9) { dispatchFx({'currentPage':currentPage+1}) }
 }

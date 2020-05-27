@@ -12,7 +12,12 @@ import textBeep from 'audio/text.mp3';
 // Style
 import localstyle from './TextBox.module.scss';
 
-// BIG TODO: Fix other TODOs, extrapolate and make its own package
+// BIG TODO: Fix other TODOs, extrapolate and make its own packag
+// TODO:
+// 1, Add custom CC support []
+// 2. Fix other todos []
+// 3. Strip out project specific code for packaging
+// 4. Not sure yet... Think of cool features
 
 class TextBox extends React.Component {
   constructor(props) {
@@ -22,22 +27,25 @@ class TextBox extends React.Component {
       "charArray"  : [],    // Array of chars to type
       "charsTyped" : [],    // Initialize to array[] in prepareText()
       "charIndex"  : 0,     // Current char in charArray
+      "started"    : false, // Started typing?
+      "doneTyping" : false, // Done typing?
     }
 
     this.speedMulti = 1;
 
     // Props
-    this.medianCharDelay  = props.medianCharDelay || 90; //90;
-    this.delayWaver       = props.delayWaver      || 40;
+    this.medianCharDelay  = props.medianCharDelay || 30; //90;
+    this.delayWaver       = props.delayWaver      || 0;
     this.startDelay       = props.startDelay      || 3000; // TODO: update this for not my needs
 
     // Timeout list
     this.parseTimeout = null;
 
     // Performance
-    this.lastPerf   = 0;
-    this.iterations = 0;
-    this.perfStats  = {
+    this.lastFramePerf  = 0;
+    this.lastPerfE      = 0;
+    this.iterations     = 0;
+    this.perfStats      = {
       plus100s: 0,
       sub100s : 0,
     }
@@ -61,33 +69,31 @@ class TextBox extends React.Component {
     // document.addEventListener("keydown", this.handleKeyDown.bind(this))
     // document.addEventListener("keyup", this.handleKeyUp.bind(this))
     // Prepare Text
+    console.log("MOUNT")
     this.textToType = this.prepareText(this.props.textToType || "")
   }
 
   shouldComponentUpdate() {
     if (!this.state.charsTyped.length <= this.state.charArray.length) {
-      //console.log(this.perfStats)
+      console.log(this.perfStats, this.lastFramePerf)
     }
     return this.state.charsTyped.length <= this.state.charArray.length
   }
 
   componentDidUpdate() {
     // Performance Logging
-    let perf = performance.now() - this.lastPerf
+    this.lastFramePerf = performance.now() - this.lastPerfE
 
-    if (perf > 100) {
+    if (this.lastFramePerf > 100) {
       this.perfStats.plus100s += 1
     } else {
       this.perfStats.sub100s += 1
     }
 
-    this.lastPerf = performance.now()
+    this.lastPerfE = performance.now()
     this.iterations += 1
 
-    if (!this.waitInput) {
-      this.sfx1.play()
-      this.parseNextChar();
-    }
+    this.isTypingDone();
   }
 
   componentWillUnmount() {
@@ -117,7 +123,7 @@ class TextBox extends React.Component {
     if (this.waitInput) {
       await this.clearTimeouts()
       this.waitInput = false;
-      this.forceUpdate();
+      this.parseNextChar();
     }
     else if (this.state.charsTyped.length >= this.state.charArray.length ) {
       this.props.turn()
@@ -125,6 +131,12 @@ class TextBox extends React.Component {
       //this.speedMulti = .25
     }
 
+  }
+
+  isTypingDone() {
+    if (this.state.charsTyped.length >= this.state.charArray.length && !this.state.doneTyping) {
+      this.setState({"doneTyping": true})
+    }
   }
 
   ////////////////
@@ -152,9 +164,20 @@ class TextBox extends React.Component {
     this.setState({"charArray": charArray}, this.parseNextChar)
   }
 
+  async startTyping() {
+
+  }
+
   // Parse the next char for CC Leaders, default is " [ " ; handle accordingly
   async parseNextChar() {
 
+    // If doneTyping TODO: Add done callbacks for packaging
+    if (this.state.doneTyping) { return }
+
+    // If waiting for input, don't do anything
+    if (this.waitInput) { return }
+
+    this.sfx1.play()
     let charDelay = this.getCharDelay()
 
     await this.wait(charDelay)
@@ -164,7 +187,7 @@ class TextBox extends React.Component {
       // Add domElement to typedChars
       let newcharArray = [...this.state.charsTyped]
       newcharArray.push(this.state.charArray[this.state.charIndex])
-      this.setState({"charIndex": this.state.charIndex += 1, "charsTyped": newcharArray})
+      this.setState({"charIndex": this.state.charIndex += 1, "charsTyped": newcharArray}, this.parseNextChar)
     }
     // Check for control codes
     else if (typeof this.state.charArray[this.state.charIndex] !== 'undefined'
@@ -172,7 +195,7 @@ class TextBox extends React.Component {
     ) {
 
       let ccDetected = await this.handleControlCode()
-      this.setState(ccDetected)
+      this.setState(ccDetected, this.parseNextChar)
 
     } else {
 
@@ -188,7 +211,7 @@ class TextBox extends React.Component {
         newcharArray.push("X")
       }
 
-      this.setState({"charIndex": this.state.charIndex += 1, "charsTyped": newcharArray})
+      this.setState({"charIndex": this.state.charIndex += 1, "charsTyped": newcharArray}, this.parseNextChar)
 
     }
 
