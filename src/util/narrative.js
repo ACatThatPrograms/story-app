@@ -15,7 +15,7 @@ let page2 =
 `One boring spring day, [w100]
 Adam decided to take a gander at the available programming jobs on the web.
 [2br] Just then [w500] . [100] . [100] .
-[br] [ding] [br]
+[2br] [ding]
 [2br] [f1] The most perfect job popped right up on the screen before his very eyes! [w220]
 [2br] “Wow!” he exclaimed. [w400]
  “There’s never been a position I’ve been more hopeful to have in my whole life!” he said to his ever-supportive cats.`
@@ -74,17 +74,20 @@ But then. [w50] . [w50] . [w350]
 
 [2br] [ding] [f1]
 
-[2br] He got an email! [wi]
-
-[br] He got the interview! [wi]
-
-[br] He got the job! [f2]
-
-[2br] Congratulations,[w50] Adam! [w350] Three cheers for Adam! [f3] [w350]
-
-[2br] ~ The End ~`
+[2br] He got an email!
+`
 
 let page9 =
+`
+[br] He got the interview! [w350]
+
+[br] He got the job! [w350]
+
+[2br] Congratulations,[w50] Adam! [w350] Three cheers for Adam!
+[w400]
+[2br] ~ The End ~`
+
+let page10 =
 `If you would like to make this story a reality [w100] . [w100 . [100] . [br]
 Go ahead and [email] [2br]
 And, [w100] don't forget to check out my [website] and [resume] ! [2br]
@@ -94,7 +97,8 @@ Features: [br]
 - Simple animation triggers utilizing CSSTransitionGroups [br]
 - Crunch build time of about two days
 [2br] Thanks for your time!
-[br] Have a great day! [stop]
+[br] Have a great day!
+[2br] - Adam II [stop]
 `
 
 export default {
@@ -108,4 +112,5 @@ export default {
   7: page7,
   8: page8,
   9: page9,
+  10: page10,
 }

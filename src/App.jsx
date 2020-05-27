@@ -114,6 +114,7 @@ class App extends Component  {
           customCCs={this.customCCs}
           textToType={this.getCurrentNarrative()}
           turn={ () => {this.turn('R')} }
+          noPrompt={this.state.currentPage === 10 ? true : false}
         />
       )
     )
@@ -178,8 +179,7 @@ class App extends Component  {
       })
       return ''
     })
-    // Filters out nulls
-    images = images.filter( e => e.key !== null)
+    // TODO  Filter out nulls to remove key errors
     return images
   }
 

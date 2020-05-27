@@ -37,8 +37,6 @@ class TextBox extends React.Component {
 
     this.speedMulti = 1;
 
-    console.log(this.props.startDelay)
-
     // Props // TODO: Convert to propTypes
     this.medianCharDelay  = 40;
     this.delayWaver       = 10;
@@ -92,7 +90,7 @@ class TextBox extends React.Component {
   /////////////////////////
 
   componentDidMount() {
-    console.log("Mount!", this)
+    // console.log("Mount!", this)
     // Subscribe Events
     document.addEventListener("keydown", this.handleKeyDown.bind(this))
     document.addEventListener("keyup", this.handleKeyUp.bind(this))
@@ -283,7 +281,7 @@ class TextBox extends React.Component {
       ccRemoved.splice(this.state.charIndex,1,imgToAdd)
     }
     if ( cc === "[reactjs]") {
-      let domToAdd = `<img src="${ReactJSImg}" alt="ding"/>`
+      let domToAdd = `<img class="${localstyle.reactjs}" src="${ReactJSImg}" alt="reactjs"/>`
       ccRemoved.splice(this.state.charIndex,1,domToAdd)
     }
     if ( cc === "[email]") {
@@ -346,9 +344,10 @@ class TextBox extends React.Component {
   ///////////////
 
   renderAdvanceButton() {
+    if (this.props.noPrompt) { return '' }
     if (
-      (this.state.charsTyped.length >= this.state.charArray.length && !this.waitInput && this.state.charsTyped.length !== 0) ||
-      (this.waitInput)
+      (this.state.charsTyped.length >= this.state.charArray.length && !this.waitInput && this.state.charsTyped.length !== 0)
+      || (this.waitInput)
     ) {
       return (
           <img src={SpacebarImg} alt="continue_img"/>

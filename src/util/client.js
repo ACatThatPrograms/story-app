@@ -22,8 +22,8 @@ import page7_3 from 'images/page7-3.png';
 import page7_4 from 'images/page7-4.png';
 import page8_1 from 'images/page8-1.png';
 import page8_2 from 'images/page8-2.png';
-import page8_3 from 'images/page8-3.png';
-import page8_4 from 'images/page8-4.png';
+import page9_1 from 'images/page8-3.png';
+import page9_2 from 'images/page8-4.png';
 
 ////////////////////////
 // Animation Builders //
@@ -101,11 +101,13 @@ export function getImageData() {
       8: {
         0: page8_1,
         1: page8_2,
-        2: page8_3,
-        3: page8_4,
       },
       9: {
-        0: null
+        0: page9_1,
+        1: page9_2,
+      },
+      10: {
+        0: null,
       }
 
     }
@@ -116,7 +118,8 @@ export function getPageAnimType(pageNum) {
     case 4:
     case 5:
     case 6:
-    case 7: return 'loop'
+    case 7:
+    case 9: return 'loop'
     default: return 'trigger'
   }
 }
@@ -138,5 +141,5 @@ const _turnLeft = (currentPage, updateFx) => {
 }
 
 const _turnRight = (currentPage, updateFx) => {
-  if (currentPage < 9) { updateFx({'currentPage':currentPage+1}) }
+  if (currentPage < 10) { updateFx({'currentPage':currentPage+1}) }
 }
