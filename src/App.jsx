@@ -11,56 +11,96 @@ import TextBox from 'components/TextBox2/TextBox.jsx';
 import Navigation from './components/Navigation/Navigation';
 
 // Util
-import { applyTextBoxAnim, getImageData } from 'util/client';
+import { applyTextBoxAnim, getImageData, getPageAnimType } from 'util/client';
 import narrative from 'util/narrative.js';
 
 class App extends Component  {
   constructor(props){
     super(props)
-    // Using local state and prop passing to
-    // Allow react-transition animations
+
     this.state = {
       'currentPage'  : 0,
       'currentFrame' : 0,
       'loadedImages' : 0,
     }
 
-    this.imageFrames    = getImageData();
+    this.imageFrames    = getImageData(); // All Image Frames
+    this.totalImages    = 22; // TODO: Automate this in utils
+    this.loopAnimRate   = 1000;
 
-    this.totalImages    = 22 // TODO: Automate this in utils
-
+    // Binds
     this.getCurrentPage = this.getCurrentPage.bind(this)
     this.buildPage      = this.buildPage.bind(this)
+    this.checkAnim      = this.checkAnim.bind(this)
 
+    // TextBox Props to Forward Custom CCs
+    this.customCCs = [
+      {
+        'signalChar'   : 'f',    // First character of code
+        'fullMatch'    : false,  // Look for full match? Use for CCs without vars
+        'codeFunction' : this.parseForFrameUpdate.bind(this), // Callback Fx for parse
+        'async'        : false   // Defaults to false
+      }
+    ]
+
+  }
+
+  ////////////////////////
+  // Animation Handling //
+  ////////////////////////
+  checkAnim() {
+    if (getPageAnimType(this.state.currentPage) === 'loop') {
+      this.handleLoopAnim()
+    }
+  }
+
+  handleLoopAnim() {
+    console.log('loopanim')
+  }
+
+  triggerAnim(frame) {
+    this.setState({"currentFrame": frame})
+  }
+
+  ///////////////////////////////////
+  // Custom Control Codes for TBox //
+  ///////////////////////////////////
+  parseForFrameUpdate(cc) {
+    //debugger;
+    let updateFrame = cc.charAt(1);
+    this.setState({'currentFrame': updateFrame})
   }
 
   ////////////////////////////////
   // Pafe Turn && State Updates //
   ////////////////////////////////
   turn(dir) {
-    let makeshiftProps = {
-      'state_client': {currentPage: this.state.currentPage},
-      'dispatch_updateClient': this.pageUpdate.bind(this)
-    }
-    turnPage(dir, makeshiftProps)
+    turnPage(dir, this.state.currentPage, this.pageUpdate.bind(this))
   }
 
   pageUpdate(page) {
-    this.setState({'currentPage': page.currentPage, 'currentFrame': 0})
+    this.setState({'currentPage': page.currentPage, 'currentFrame': 0}, this.checkAnim)
   }
 
   ///////////////////
   // Page Building //
   ///////////////////
   buildPage() {
+
+    let textBox = (applyTextBoxAnim(
+        <TextBox
+          customCCs={this.customCCs}
+          textToType={this.getCurrentNarrative()}
+          turn={ () => {this.turn('R')} }
+        />
+      )
+    )
+
     return (
       <div className="page" key={"page_" + this.state.currentPage}>
-
         <div className="innerPage">
 
-          {/*Non flipped page */}
           <div className="front"/>
-
           <div className="back">
 
             <div className={["left", this.getImgClass()].join(' ')}>
@@ -68,13 +108,11 @@ class App extends Component  {
             </div>
 
             <div className="right">
-              {applyTextBoxAnim(<TextBox turn={ () => {this.turn('R')} }  textToType={this.getCurrentNarrative()}/>)}
+              {textBox}
             </div>
 
           </div>
-
         </div>
-        {this.state_currentPage}
       </div>
     )
   }
@@ -99,13 +137,10 @@ class App extends Component  {
   // Loading Fx //
   ////////////////
 
-  // Make sure images in
+  // Return all images as img React Objects in array
   getAllImages() {
     let images = []
-
-    // Parse pages
     Object.keys(this.imageFrames).map( (k) => {
-      // Parse Frames
       Object.keys(this.imageFrames[k]).map( (k2) => {
         let url = this.imageFrames[k][k2]
         images.push(<img key={url} src={url} alt={"scene_image"} onLoad={this.loadCounterUp.bind(this)} />)
@@ -113,9 +148,7 @@ class App extends Component  {
       })
       return ''
     })
-
     return images
-
   }
 
   loadCounterUp() {
@@ -168,21 +201,22 @@ class App extends Component  {
 
       <>
 
-      {nav}
+        {nav}
 
-      <div className="main-border">
+        <div className="main-border">
 
-        <div className="page-color"/>
+          <div className="page-color"/>
 
-        <CSSTransitionGroup {...cssTransiitonProps}>
-          {page}
-        </CSSTransitionGroup>
+          <CSSTransitionGroup {...cssTransiitonProps}>
+            {page}
+          </CSSTransitionGroup>
 
-      </div>
+        </div>
 
       </>
 
     );
+
   }
 }
 

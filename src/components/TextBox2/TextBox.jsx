@@ -17,7 +17,11 @@ import localstyle from './TextBox.module.scss';
 // 1, Add custom CC support []
 // 2. Fix other todos []
 // 3. Strip out project specific code for packaging
-// 4. Not sure yet... Think of cool features
+// 4. Clean up general lingo and comments
+// 5. After cleanup, break up and abstract out
+// 6. Not sure yet... Think of cool features
+
+const debugPerformance = false;
 
 class TextBox extends React.Component {
   constructor(props) {
@@ -34,9 +38,10 @@ class TextBox extends React.Component {
     this.speedMulti = 1;
 
     // Props
-    this.medianCharDelay  = props.medianCharDelay || 30; //90;
-    this.delayWaver       = props.delayWaver      || 0;
+    this.medianCharDelay  = props.medianCharDelay || 40;
+    this.delayWaver       = props.delayWaver      || 10;
     this.startDelay       = props.startDelay      || 3000; // TODO: update this for not my needs
+    this.customCCs        = props.customCCs       || [];
 
     // Timeout list
     this.parseTimeout = null;
@@ -44,62 +49,71 @@ class TextBox extends React.Component {
     // Performance
     this.lastFramePerf  = 0;
     this.lastPerfE      = 0;
-    this.iterations     = 0;
     this.perfStats      = {
-      plus100s: 0,
-      sub100s : 0,
+      lastFrame     : 0,
+      lastPerfMach  : 0,
+      iterations    : 0,
+      speedMulti    : 1.00,
+      plus100s      : 0,
+      sub100s       : 0,
     }
 
-    // Non-React Temporary State - Use to prevent rendering
-    this.waitInput = false
-    this.timeouts  = []
+    // Other
+    this.waitInput  = false;
+    this.lockSpace  = false;
+    this.timeouts   = [];
+    this.speedMulti = 1.00;
 
+  }
+
+  /////////////////////////
+  /* Performance Logging */
+  /////////////////////////
+  perfLogging() {
+    this.perfStats.lastFrame = performance.now() - this.perfStats.lastPerfMach
+
+    if (this.perfStats.lastFrame > 100) {
+      this.perfStats.plus100s += 1
+    } else {
+      this.perfStats.sub100s += 1
+    }
+
+    this.perfStats.speedMulti   = this.speedMulti
+    this.perfStats.lastPerfMach = performance.now()
+    this.perfStats.iterations  += 1
   }
 
   /////////////////////////
   /* Mounting && Updates */
   /////////////////////////
 
-  initialize() {}
-
   componentDidMount() {
-    // this.initialize();
-    // console.log("Mount!", this)
+    console.log("Mount!", this)
     // Subscribe Events
-    // document.addEventListener("keydown", this.handleKeyDown.bind(this))
-    // document.addEventListener("keyup", this.handleKeyUp.bind(this))
+    document.addEventListener("keydown", this.handleKeyDown.bind(this))
+    document.addEventListener("keyup", this.handleKeyUp.bind(this))
     // Prepare Text
-    console.log("MOUNT")
     this.textToType = this.prepareText(this.props.textToType || "")
   }
 
   shouldComponentUpdate() {
-    if (!this.state.charsTyped.length <= this.state.charArray.length) {
+    if (!this.state.charsTyped.length <= this.state.charArray.length && debugPerformance) {
       console.log(this.perfStats, this.lastFramePerf)
     }
     return this.state.charsTyped.length <= this.state.charArray.length
   }
 
   componentDidUpdate() {
-    // Performance Logging
-    this.lastFramePerf = performance.now() - this.lastPerfE
-
-    if (this.lastFramePerf > 100) {
-      this.perfStats.plus100s += 1
-    } else {
-      this.perfStats.sub100s += 1
-    }
-
-    this.lastPerfE = performance.now()
-    this.iterations += 1
-
+    // Performance logging etc.
+    this.perfLogging();
+    // Check if typing is done . . .
     this.isTypingDone();
   }
 
   componentWillUnmount() {
     this.clearTimeouts();
-    // document.removeEventListener("keydown", this.handleKeyDown.bind(this))
-    // document.removeEventListener("keyup", this.handleKeyUp.bind(this))
+    document.removeEventListener("keydown", this.handleKeyDown.bind(this))
+    document.removeEventListener("keyup", this.handleKeyUp.bind(this))
   }
 
   // Wait timeout for delays
@@ -118,17 +132,18 @@ class TextBox extends React.Component {
     })
   }
 
+  // TODO: Remove project specific turn code here
   async input() {
     // Response to waitInput
     if (this.waitInput) {
-      await this.clearTimeouts()
       this.waitInput = false;
       this.parseNextChar();
     }
-    else if (this.state.charsTyped.length >= this.state.charArray.length ) {
+    else if (this.state.doneTyping) {
+      this.lockSpace = true;
       this.props.turn()
-    } else if (this.speedMulti !== .25){
-      //this.speedMulti = .25
+    } else if (this.speedMulti !== .5){
+      this.speedMulti = .5
     }
 
   }
@@ -143,14 +158,14 @@ class TextBox extends React.Component {
   /* User Input */
   ////////////////
   handleKeyDown(e) {
-    if (e.code === "Space") {
+    if (e.code === "Space" && !this.lockSpace ) {
       this.input();
     }
   }
 
   handleKeyUp(e) {
-    if (e.code === "Space") {
-      //this.speedMulti = 1.00
+    if (e.code === "Space" ) {
+      this.speedMulti = 1.00
     }
   }
 
@@ -164,10 +179,6 @@ class TextBox extends React.Component {
     this.setState({"charArray": charArray}, this.parseNextChar)
   }
 
-  async startTyping() {
-
-  }
-
   // Parse the next char for CC Leaders, default is " [ " ; handle accordingly
   async parseNextChar() {
 
@@ -177,7 +188,6 @@ class TextBox extends React.Component {
     // If waiting for input, don't do anything
     if (this.waitInput) { return }
 
-    this.sfx1.play()
     let charDelay = this.getCharDelay()
 
     await this.wait(charDelay)
@@ -187,6 +197,7 @@ class TextBox extends React.Component {
       // Add domElement to typedChars
       let newcharArray = [...this.state.charsTyped]
       newcharArray.push(this.state.charArray[this.state.charIndex])
+      this.sfx1.play()
       this.setState({"charIndex": this.state.charIndex += 1, "charsTyped": newcharArray}, this.parseNextChar)
     }
     // Check for control codes
@@ -206,12 +217,19 @@ class TextBox extends React.Component {
 
       // If last character, add one last space to push last character where it belongs
       // This accounts for the css animation class for the entrance character
-      // +1 to account for last char update not triggering rerender as per shouldComponentUpdate
       if (this.state.charsTyped.length === this.state.charArray.length) {
-        newcharArray.push("X")
+        newcharArray.push(" ")
       }
 
-      this.setState({"charIndex": this.state.charIndex += 1, "charsTyped": newcharArray}, this.parseNextChar)
+      // Only play sfx for chars
+      if (this.state.charArray[this.state.charIndex] !== " ") {
+        this.sfx1.play()
+      }
+
+      this.setState({
+        "charIndex": this.state.charIndex += 1,
+        "charsTyped": newcharArray
+      }, this.parseNextChar)
 
     }
 
@@ -240,6 +258,11 @@ class TextBox extends React.Component {
     if ( cc.charAt(1) === "w" & cc.charAt(2) === "i" ) {
       this.waitInput = true
     }
+    // Parse for custom control codes
+    if (this.props.customCCs && this.props.customCCs.length > 0) {
+      await this.parseForCustomCC(cc)
+    }
+
     // Prepae setState Data to return
     return {
       "charArray" : ccRemoved,
@@ -248,12 +271,34 @@ class TextBox extends React.Component {
 
   }
 
+  // Parse props.customCCs array for custom codes, callback appropriate functions
+  async parseForCustomCC(cc) {
+    return new Promise( async (res) => {
+      let customCC = this.props.customCCs.filter(e => e.signalChar === cc.charAt(1))
+      // TODO: Add full match checking
+      // Plan/theory out on how to support custom CC's with similar signal chars
+      if (customCC.length !== 0) {
+        if (customCC[0].async) {
+          await customCC[0].codeFunction(this.removeBracketsFromCC(cc))
+        } else {
+          customCC[0].codeFunction(this.removeBracketsFromCC(cc))
+        }
+      }
+      res();
+    })
+  }
+
   // Add waver to delay unless disabled to emulate natural text typing
   getCharDelay() {
     //return Math.floor( Math.random() * (this.medianCharDelay+this.delayWaver) + (this.medianCharDelay-this.delayWaver) )
     return Math.floor(Math.random() *
     ( ( (this.medianCharDelay+this.delayWaver) - (this.medianCharDelay-this.delayWaver) ) + 1 )
-    + (this.medianCharDelay-this.delayWaver) );
+    + (this.medianCharDelay-this.delayWaver) ) * this.speedMulti;
+  }
+
+  // Remove surrounding brackets from CC
+  removeBracketsFromCC(cc) {
+    return cc.replace(/[[\]']*/g, "")
   }
 
   ///////////////

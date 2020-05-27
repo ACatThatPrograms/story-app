@@ -4,7 +4,8 @@ let page0 =
 [2br] This is the story of Adam, [w350] and how he got the best job ever. [w500]`
 
 let page1 =
-`Say hi to Adam! [w2250] [2br]
+`Say hi to Adam! [2br]
+[w750] [f1] [w250] [f2] [w250] [f3] [w250] 
 Hah! [w350] I know what you’re thinking: [w350]
 [2br] “Adam?! [w350] Why, that’s my name, too! [w350] [br] This must be fate!" [w650]
 [2br] Slow down, [w100] friendly reader! [w500]

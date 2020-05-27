@@ -111,27 +111,33 @@ export function getImageData() {
     }
 }
 
+export function getPageAnimType(pageNum) {
+  switch(pageNum) {
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8: return 'loop'
+    default: return 'trigger'
+  }
+}
+
 //////////////////
 /* Page Turning */
 //////////////////
 
-// TODO: Refactor these for post-redux removal
-
-export function turnPage(dir, reduxProps) {
-    let currentPage = reduxProps.state_client.currentPage;
-    let dispatchFx  = reduxProps.dispatch_updateClient;
-
+export function turnPage(dir, currentPage, updateFx) {
     switch(dir) {
-      case 'L': _turnLeft(currentPage, dispatchFx); break;
-      case 'R': _turnRight(currentPage, dispatchFx); break;
+      case 'L': _turnLeft(currentPage, updateFx); break;
+      case 'R': _turnRight(currentPage, updateFx); break;
       default : throw new Error("turnPage() called with", dir, `expected 'R' or 'L'`, )
     }
 }
 
-const _turnLeft = (currentPage, dispatchFx) => {
-  if (currentPage > 0) { dispatchFx({'currentPage':currentPage-1}) }
+const _turnLeft = (currentPage, updateFx) => {
+  if (currentPage > 0) { updateFx({'currentPage':currentPage-1}) }
 }
 
-const _turnRight = (currentPage, dispatchFx) => {
-  if (currentPage < 9) { dispatchFx({'currentPage':currentPage+1}) }
+const _turnRight = (currentPage, updateFx) => {
+  if (currentPage < 9) { updateFx({'currentPage':currentPage+1}) }
 }
