@@ -56,6 +56,11 @@ br {
   display: none;
 }
 
+@keyframes fade{
+  from {opacity: 1;}
+  to   {opacity: 0;}
+}
+
 .spinner {
   position: absolute;
   left: 0;
@@ -66,6 +71,9 @@ br {
   justify-content: center;
   align-items: center;
   z-index: -1;
+  animation-name: fade;
+  animation-duration: 4s;
+  animation-fill-mode: forwards;
 }
 
 /////////////////
@@ -99,6 +107,13 @@ br {
   background: $bg_color;
   border-radius: 12px;
   box-shadow: -2px 2px 4px 1px rgba(44,44,44,.25);
+
+  @media (max-width: 480px) {
+    margin: .5rem; // Fake Padding
+    height: calc(100% - 1rem );
+    width: calc(100% - 1rem );
+  }
+
 }
 
 .page {
@@ -107,6 +122,13 @@ br {
   @include fakeMarginPaddingForMainBorderChildren;
   perspective: 480px;
   overflow: hidden;
+
+  @media (max-width: 480px) {
+    margin: .5rem; // Fake Padding
+    height: calc(100% - 1rem );
+    width: calc(100% - 1rem );
+  }
+
 }
 
 .innerPage {
@@ -181,6 +203,48 @@ br {
       //   left: 0%;
       //   transform: rotateY(-180deg);
       // }
+
+    }
+
+  }
+
+  // Mobile //
+
+  @media screen and (max-width: 480px) {
+    .front, .back {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
+
+    .front {
+      z-index: 2;
+      .left, .right {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+    }
+
+    .back {
+
+      .left, .right {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        border: none;
+      }
+
+      .left {
+      }
+
+      .right {
+        padding: .75rem;
+        background: none;
+      }
 
     }
 

@@ -18,6 +18,11 @@
   height: auto;
   width: 100%;
   border-bottom-right-radius: 8px;
+
+  @media (max-width: 480px) {
+
+  }
+
 }
 // Page 1
 
@@ -38,6 +43,10 @@
     width: 80%;
     height: auto;
   }
+
+  @media (max-width: 480px) {
+    max-height: inherit;
+  }
 }
 
 .img_2 img {
@@ -48,8 +57,20 @@
 }
 
 .img_3 {
+  display: none;
   img {
     padding: 0rem 2rem;
+  }
+
+  @media (max-height: 768px) {
+    align-items: flex-end;
+    img {
+      position: relative;
+      margin-left: auto;
+      margin-right: auto;
+      height: 90%;
+      width: auto;
+    }
   }
 }
 
@@ -61,7 +82,9 @@
   // 768px Height Laptop
   @media (max-height: 768px) {
     img {
-      max-height: 640px;
+      width: 100%;
+      height: auto;
+      //max-height: 640px;
     }
   }
 }
@@ -75,11 +98,22 @@
       width: 65% !important;
     }
   }
+
+  @media (max-width: 480px) {
+    img {
+      bottom: 1rem;
+    }
+  }
 }
 
 .img_6 {
   @include centerImg;
   @include size85;
+  @media (max-width: 480px) {
+    img {
+      bottom: 2rem;
+    }
+  }
 }
 
 .img_7 {
@@ -94,13 +128,20 @@
   img {
     position: absolute;
     bottom: 0;
-    @media (max-width: 768px) {
-
-    }
   }
+
+  @media screen and (max-height: 768px) {
+    img {
+      max-height: 100%;
+    }
+
+  }
+
 }
 
 .img_9 {
   @include centerImg;
-  @include size85;
+  img {
+    width: 90%;
+  }
 }

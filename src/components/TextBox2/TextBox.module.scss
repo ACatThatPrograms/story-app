@@ -43,6 +43,9 @@ $border-color: darken($background,20);
   }
 
   @media screen and (max-width: 480px) {
+    flex-flow: column;
+    height: auto;
+    min-height: 20%;
     font-size: 1rem;
     padding: 1rem;
     letter-spacing: .05rem;
@@ -133,9 +136,9 @@ $border-color: darken($background,20);
   }
 
   @media (max-width: 480px) {
-    position: absolute;
-    bottom: -3rem;
-    right: 2rem;
+    position: relative;
+    bottom: .25rem;
+    right: 0rem;
     height: 40px;
     width: 60px;
     opacity: 1;

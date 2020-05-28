@@ -23,6 +23,38 @@ import localstyle from './TextBox.module.scss';
 
 const debugPerformance = false;
 
+// Sound setup
+
+var context = new (window.AudioContext || window.webkitAudioContext)();
+var soundBuffer = null;
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+
+function loadSound(url) {
+  var request = new XMLHttpRequest();
+  request.open('GET', url, true);
+  request.responseType = 'arraybuffer';
+
+  request.onload = function() {
+    context.decodeAudioData(request.response, function(buffer) {
+      soundBuffer = buffer;
+    }, onError);
+  }
+  request.send();
+}
+
+function onError(e) {
+  console.log(e)
+}
+
+loadSound(textBeep);
+
+function playSound(buffer) {
+  var source = context.createBufferSource();
+  source.buffer = buffer;
+  source.connect(context.destination);
+  source.start(0);
+}
+
 class TextBox extends React.Component {
   constructor(props) {
     super(props)
@@ -213,7 +245,7 @@ class TextBox extends React.Component {
       // Add domElement to typedChars
       let newcharArray = [...this.state.charsTyped]
       newcharArray.push(this.state.charArray[this.state.charIndex])
-      this.sfx1.play()
+      playSound(soundBuffer)
       this.setState({"charIndex": this.state.charIndex += 1, "charsTyped": newcharArray}, this.parseNextChar)
     }
     // Check for control codes
@@ -239,7 +271,7 @@ class TextBox extends React.Component {
 
       // Only play sfx for chars
       if (this.state.charArray[this.state.charIndex] !== " ") {
-        this.sfx1.play()
+        playSound(soundBuffer)
       }
 
       this.setState({

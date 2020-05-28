@@ -88,16 +88,19 @@ let page9 =
 [2br] ~ The End ~`
 
 let page10 =
-`If you would like to make this story a reality [w100] . [w100 . [100] . [br]
-Go ahead and [email] [2br]
-And, [w100] don't forget to check out my [website] and [resume] ! [2br]
+`If you would like to make this story a reality . [w100] . [w100 . [w100] [br]
+Go ahead and [email]  Also, [w100] to learn more about me, check out my [website] and [resume] ! [2br]
 Features: [br]
 - This awesome homebrew text box [br]
 - Custom code triggered narrative language [br]
 - Simple animation triggers utilizing CSSTransitionGroups [br]
 - Crunch build time of about two days
-[2br] Thanks for your time!
-[br] Have a great day!
+[2br] Thanks for your time! [w350]
+I sincerely do appreciate the attitude you guys exude, [w50]
+and I can tell you'd be awesome to team up with just from the way you've written your job description. [w350]
+I'll look forward to getting to know you better, [w50] but until then, [w50]
+I'll stay here and keep dreaming about it! :)
+
 [2br] - Adam II [stop]
 `
 

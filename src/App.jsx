@@ -8,7 +8,7 @@ import { turnPage } from 'util/client.js'
 import TextBox from 'components/TextBox2/TextBox.jsx';
 
 // Nav for debugging
-import Navigation from './components/Navigation/Navigation';
+// import Navigation from './components/Navigation/Navigation';
 
 // Util
 import { applyTextBoxAnim, getImageData, getPageAnimType } from 'util/client';
@@ -193,7 +193,7 @@ class App extends Component  {
 
   render () {
 
-    let nav  = <Navigation currentPage={this.state.currentPage} turn={this.turn.bind(this)}/>
+    let nav  = '' // <Navigation currentPage={this.state.currentPage} turn={this.turn.bind(this)}/>
     let page = this.getCurrentPage()
 
     let cssTransiitonProps = {
