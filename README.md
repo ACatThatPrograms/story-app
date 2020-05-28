@@ -1,6 +1,6 @@
 ## A Story
 
-A quick story crunched out in about 2 days.
+A quick story crunched out in about 5 days.
 
 That includes  almos everything, minus react framework && CSSTransitions
 
