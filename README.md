@@ -2,7 +2,7 @@
 
 A quick story crunched out in about 5 days.
 
-That includes  almos everything, minus react framework && CSSTransitions
+That includes almost everything, minus react framework && CSSTransitions and all the npm dependency hell behind them.
 
 Everything else is custom
 
