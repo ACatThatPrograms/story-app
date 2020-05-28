@@ -94,7 +94,7 @@ Features: [br]
 - This awesome homebrew text box [br]
 - Custom code triggered narrative language [br]
 - Simple animation triggers utilizing CSSTransitionGroups [br]
-- Crunch build time of about two days
+- Crunch build time of about five days
 [2br] Thanks for your time! [w350]
 I sincerely do appreciate the attitude you guys exude, [w50]
 and I can tell you'd be awesome to team up with just from the way you've written your job description. [w350]
